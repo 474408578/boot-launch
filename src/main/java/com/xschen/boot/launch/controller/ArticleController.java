@@ -4,10 +4,12 @@ import com.xschen.boot.launch.model.AjaxResponse;
 import com.xschen.boot.launch.model.Article;
 import com.xschen.boot.launch.model.ArticleVO;
 import com.xschen.boot.launch.model.Reader;
+import com.xschen.boot.launch.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/rest")
 public class ArticleController {
+
+    @Resource
+    private ArticleService articleService;
 
     //获取一篇Article，使用GET方法,根据id查询一篇文章
 //    @RequestMapping(path = "/articles/{id}", method = RequestMethod.GET)
@@ -50,7 +55,8 @@ public class ArticleController {
     @PostMapping("/articles")
     public @ResponseBody AjaxResponse saveArticle(@RequestBody Article article) {
         log.info("saveArticle: " + article);
-        return AjaxResponse.success(article);
+//        return AjaxResponse.success(article);
+        return AjaxResponse.success(articleService.saveArticle(article));
     }
 
     // 更新文章
