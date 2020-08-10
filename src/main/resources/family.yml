@@ -1,0 +1,18 @@
+family:
+  familyName: "happy family"
+  father:
+    name: zimug
+    #    age: ${random.int(20,30)}
+    age: 20
+  mother:
+    alias:
+      - lovely
+      - ailice
+  child:
+    name: ${family.father.name:zimug2}
+    age: 5
+    friends:
+      - hobby: football
+        sex: male
+      - hobby: basketball
+        sex: female

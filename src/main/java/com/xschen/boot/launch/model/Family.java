@@ -1,8 +1,10 @@
 package com.xschen.boot.launch.model;
 
+import com.xschen.boot.launch.utils.MixPropertySourceFactory;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -19,6 +21,7 @@ import javax.validation.constraints.NotEmpty;
 @Component
 @ConfigurationProperties(prefix = "family") // 表示配置的整体前缀, 将配置绑定到变量上
 @Validated // 对绑定的属性值进行校验
+@PropertySource(value = {"classpath:family.yml"}, factory = MixPropertySourceFactory.class)
 public class Family {
     // 成员变量名称要和yml配置项key一一对应
 //    @Value("${family.familyName}")
