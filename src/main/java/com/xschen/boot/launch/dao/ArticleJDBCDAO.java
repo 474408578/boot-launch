@@ -17,11 +17,14 @@ import java.util.List;
 @Repository
 public class ArticleJDBCDAO {
     @Resource
-    private JdbcTemplate jdbcTemplate;
+    private JdbcTemplate primaryJdbcTemplate;
 
 
     // 保存文章
-    public void save(Article article) {
+    public void save(Article article, JdbcTemplate jdbcTemplate) {
+        if (jdbcTemplate == null) {
+            jdbcTemplate = primaryJdbcTemplate;
+        }
         jdbcTemplate.update("INSERT INTO article(author, title, content, create_time) values(?, ?, ?, ?)",
                 article.getAuthor(),
                 article.getTitle(),
@@ -30,13 +33,19 @@ public class ArticleJDBCDAO {
     }
 
     // 删除文章
-    public void deleteById(Long id) {
+    public void deleteById(Long id, JdbcTemplate jdbcTemplate) {
+        if (jdbcTemplate == null) {
+            jdbcTemplate = primaryJdbcTemplate;
+        }
         // jdbcTemplate.update适合阈insert、update、delete操作
         jdbcTemplate.update("DELETE FROM article WHERE id = ?", id);
     }
 
     // 更新文章
-    public void updateArticle(Article article) {
+    public void updateArticle(Article article, JdbcTemplate jdbcTemplate) {
+        if (jdbcTemplate == null) {
+            jdbcTemplate = primaryJdbcTemplate;
+        }
         jdbcTemplate.update("UPDATE article SET author = ?, title = ?, content = ?, create_time = ? WHERE id = ?",
                 article.getAuthor(),
                 article.getTitle(),
@@ -46,7 +55,10 @@ public class ArticleJDBCDAO {
     }
 
     // 根据id查找文章
-    public Article findById(Long id) {
+    public Article findById(Long id, JdbcTemplate jdbcTemplate) {
+        if (jdbcTemplate == null) {
+            jdbcTemplate = primaryJdbcTemplate;
+        }
         // jdbcTemplate.queryForObject用于查询单条记录返回结果
         // BeanPropertyRowMapper可以将数据库字段的值向Article对象映射，满足驼峰标识也可以自动映射。
         return (Article) jdbcTemplate.queryForObject("SELECT * FROM article WHERE id = ?",
@@ -54,7 +66,10 @@ public class ArticleJDBCDAO {
     }
 
     // 查询所有
-    public List<Article> findAll() {
+    public List<Article> findAll(JdbcTemplate jdbcTemplate) {
+        if (jdbcTemplate == null) {
+            jdbcTemplate = primaryJdbcTemplate;
+        }
         // jdbcTemplate.query用于查询结果列表
         return (List<Article>) jdbcTemplate.query("SELECT * FROM article", new BeanPropertyRowMapper<>(Article.class));
     }
