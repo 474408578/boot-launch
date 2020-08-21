@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ImportResource;
  * @author xschen
  */
 
-@ImportResource(locations = {"classpath:beans.xml"})
+@ImportResource(locations = {"classpath:otherconfig/beans.xml"})
 @SpringBootApplication
 public class BootLaunchApplication {
     public static void main(String[] args) {

@@ -58,7 +58,7 @@ public class ArticleRestControllerTest3 {
          * 打桩，告诉应用程序，当调用articleService.saveArticle(articleObj)时，不是真的调用这个方法，
          * 直接返回一个结果("ok")就行了。
          */
-        when(articleService.saveArticle(articleObj)).thenReturn("ok");
+//        when(articleService.saveArticle(articleObj)).thenReturn("ok");
 
         ResultActions resultActions = mockMvc.perform(
                 MockMvcRequestBuilders
