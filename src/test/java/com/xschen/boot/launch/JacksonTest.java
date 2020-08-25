@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,11 +28,11 @@ public class JacksonTest {
         readers.add(new Reader("james", 20));
 
         Article article = Article.builder()
-                .id(2L)
+                .id(2)
                 .author("zimug")
                 .content("springboot 从青铜到王者")
-                .createTime(LocalDateTime.now())
-                .reader(readers)
+                .createTime(new Date())
+//                .reader(readers)
                 .title("t1").build();
 
         String jsonStr = mapper.writeValueAsString(article);

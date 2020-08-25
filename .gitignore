@@ -33,3 +33,7 @@ HELP.md
 mvnw
 mvnw.cmd
 .mvn
+
+
+### log
+*.log

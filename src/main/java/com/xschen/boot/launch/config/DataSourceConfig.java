@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 
 @Configuration
 public class DataSourceConfig {
-
+/*
     @Primary
 //    @Bean(name = "primaryDataSource")
 //    @ConfigurationProperties(prefix = "spring.datasource.primary") // testdb
@@ -50,5 +50,5 @@ public class DataSourceConfig {
     @Bean("secondaryJdbcTemplate")
     public JdbcTemplate secondaryJdbcTemplate(@Qualifier("secondaryDataSource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
-    }
+    }*/
 }

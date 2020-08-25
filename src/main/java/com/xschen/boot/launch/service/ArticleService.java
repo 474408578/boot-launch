@@ -1,7 +1,7 @@
 package com.xschen.boot.launch.service;
 
 import com.xschen.boot.launch.model.Article;
-import org.springframework.stereotype.Service;
+import com.xschen.boot.launch.model.ArticleVO;
 
 import java.util.List;
 
@@ -9,15 +9,14 @@ import java.util.List;
  * @author xschen
  */
 
-@Service
 public interface ArticleService {
-    void saveArticle(Article article);
+    void saveArticle(ArticleVO article);
 
     void deleteArticle(Long id);
 
-    void updateArticle(Article article);
+    void updateArticle(ArticleVO article);
 
-    Article getArticle(Long id);
+    ArticleVO getArticle(Long id);
 
-    List<Article> getAll();
+    List<ArticleVO> getAll();
 }
