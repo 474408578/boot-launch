@@ -1,6 +1,5 @@
-package com.xschen.boot.launch.dao;
+package com.xschen.boot.launch.dao.testdb;
 
-import com.xschen.boot.launch.model.Article;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -10,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
-    Article findByAuthor(String zimug);
+    Article findByAuthor(String author);
 }

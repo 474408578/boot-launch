@@ -1,9 +1,7 @@
 package com.xschen.boot.launch.controller;
 
 import com.xschen.boot.launch.model.AjaxResponse;
-import com.xschen.boot.launch.model.Article;
 import com.xschen.boot.launch.model.ArticleVO;
-import com.xschen.boot.launch.model.Reader;
 import com.xschen.boot.launch.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

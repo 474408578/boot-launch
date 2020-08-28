@@ -2,12 +2,10 @@ package com.xschen.boot.launch;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xschen.boot.launch.model.Article;
+import com.xschen.boot.launch.dao.testdb.Article;
 import com.xschen.boot.launch.model.Reader;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +26,7 @@ public class JacksonTest {
         readers.add(new Reader("james", 20));
 
         Article article = Article.builder()
-                .id(2)
+                .id(2L)
                 .author("zimug")
                 .content("springboot 从青铜到王者")
                 .createTime(new Date())

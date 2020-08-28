@@ -1,0 +1,8 @@
+CREATE TABLE `message` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(32) NOT NULL,
+	`content` VARCHAR(512) NOT NULL,
+	PRIMARY KEY (`id`)
+)
+COMMENT='消息'
+ENGINE=InnoDB;

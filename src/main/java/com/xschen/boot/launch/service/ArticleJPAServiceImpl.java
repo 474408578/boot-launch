@@ -1,7 +1,7 @@
 package com.xschen.boot.launch.service;
 
-import com.xschen.boot.launch.dao.ArticleRepository;
-import com.xschen.boot.launch.model.Article;
+import com.xschen.boot.launch.dao.testdb.ArticleRepository;
+import com.xschen.boot.launch.dao.testdb.Article;
 import com.xschen.boot.launch.model.ArticleVO;
 import com.xschen.boot.launch.utils.DozerUtils;
 import org.dozer.Mapper;
