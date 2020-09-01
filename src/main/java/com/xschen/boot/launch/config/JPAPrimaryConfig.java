@@ -1,24 +1,21 @@
 package com.xschen.boot.launch.config;
 
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateSettings;
-import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
+import com.mysql.cj.jdbc.MysqlXADataSource;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+import org.springframework.boot.jta.atomikos.AtomikosDataSourceBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.annotation.Resource;
-import javax.persistence.EntityManager;
 import javax.sql.DataSource;
-import java.util.Map;
+import java.sql.SQLException;
+import java.util.HashMap;
 
 /**
  * @author xschen
@@ -27,62 +24,60 @@ import java.util.Map;
  * EntityManager 实体管理器
  * EntityManagerFactoryBean 实体管理器工厂
  * PlatformTransactionManager 事务管理器
- *
- *
  */
 
 
 
 @Configuration
-@EnableTransactionManagement
-@EnableJpaRepositories(
-        entityManagerFactoryRef="entityManagerFactoryPrimary",
-        transactionManagerRef="transactionManagerPrimary",
-        basePackages= { "com.xschen.boot.launch.dao.testdb" }) //换成你自己的Repository所在位置
+@DependsOn("transactionManager")
+@EnableJpaRepositories(basePackages = "com.xschen.boot.launch.dao.testdb",
+                        entityManagerFactoryRef = "primaryEntityManager",
+                        transactionManagerRef = "transactionManager")
 public class JPAPrimaryConfig {
 
     @Resource
-    private JpaProperties jpaProperties;
+    private JpaVendorAdapter jpaVendorAdapter;
 
-    @Resource
-    private HibernateProperties hibernateProperties;
-
-
+    //primary
     @Primary
-    @Bean(name = "primaryDataSource")
-    @ConfigurationProperties(prefix="spring.datasource.primary")  //使用application.yml的primary数据源配置
-    public DataSource primaryDataSource() {
-        return DataSourceBuilder.create().build();
+    @Bean(name = "primaryDataSourceProperties")
+    @ConfigurationProperties(prefix = "spring.datasource.primary")     //注意这里
+    public DataSourceProperties primaryDataSourceProperties() {
+        return new DataSourceProperties();
     }
 
     @Primary
-    @Bean(name = "entityManagerPrimary")        //primary实体管理器
-    public EntityManager entityManager(EntityManagerFactoryBuilder builder) {
-        return entityManagerFactoryPrimary(builder).getObject().createEntityManager();
+    @Bean(name = "primaryDataSource", initMethod = "init", destroyMethod = "close")
+    @ConfigurationProperties(prefix = "spring.datasource.primary")
+    public DataSource primaryDataSource() throws SQLException {
+        MysqlXADataSource mysqlXaDataSource = new MysqlXADataSource();
+        mysqlXaDataSource.setUrl(primaryDataSourceProperties().getUrl());
+        mysqlXaDataSource.setPinGlobalTxToPhysicalConnection(true);
+        mysqlXaDataSource.setPassword(primaryDataSourceProperties().getPassword());
+        mysqlXaDataSource.setUser(primaryDataSourceProperties().getUsername());
+        AtomikosDataSourceBean xaDataSource = new AtomikosDataSourceBean();
+        xaDataSource.setXaDataSource(mysqlXaDataSource);
+        xaDataSource.setUniqueResourceName("primary");
+        xaDataSource.setBorrowConnectionTimeout(60);
+        xaDataSource.setMaxPoolSize(20);
+        return xaDataSource;
     }
 
-
-
     @Primary
-    @Bean(name = "entityManagerFactoryPrimary")    //primary实体工厂
-    public LocalContainerEntityManagerFactoryBean entityManagerFactoryPrimary (EntityManagerFactoryBuilder builder) {
+    @Bean(name = "primaryEntityManager")
+    @DependsOn("transactionManager")
+    public LocalContainerEntityManagerFactoryBean primaryEntityManager() throws Throwable {
 
-        Map<String,Object> properties =
-                hibernateProperties.determineHibernateProperties(
-                        jpaProperties.getProperties(),
-                        new HibernateSettings());
-
-        return builder.dataSource(primaryDataSource())
-                .properties(properties)
-                .packages("com.xschen.boot.launch.dao.testdb")     //换成你自己的实体类所在位置
-                .persistenceUnit("primaryPersistenceUnit")
-                .build();
-    }
-
-
-    @Primary
-    @Bean(name = "transactionManagerPrimary")         //primary事务管理器
-    public PlatformTransactionManager transactionManagerPrimary(EntityManagerFactoryBuilder builder) {
-        return new JpaTransactionManager(entityManagerFactoryPrimary(builder).getObject());
+        HashMap<String, Object> properties = new HashMap<String, Object>();
+        properties.put("hibernate.transaction.jta.platform", AtomikosJtaPlatform.class.getName());
+        properties.put("javax.persistence.transactionType", "JTA");
+        LocalContainerEntityManagerFactoryBean entityManager = new LocalContainerEntityManagerFactoryBean();
+        entityManager.setJtaDataSource(primaryDataSource());
+        entityManager.setJpaVendorAdapter(jpaVendorAdapter);
+        //这里要修改成主数据源的扫描包
+        entityManager.setPackagesToScan("com.xschen.boot.launch.dao.testdb");
+        entityManager.setPersistenceUnitName("primaryPersistenceUnit");
+        entityManager.setJpaPropertyMap(properties);
+        return entityManager;
     }
 }

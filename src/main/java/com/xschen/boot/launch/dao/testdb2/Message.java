@@ -16,6 +16,7 @@ import java.util.Date;
 @Data
 @Builder
 @Entity
+@AllArgsConstructor
 @Table(name = "message")
 public class Message {
 

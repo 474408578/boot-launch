@@ -2,10 +2,13 @@ package com.xschen.boot.launch.service;
 
 import com.xschen.boot.launch.dao.testdb.ArticleRepository;
 import com.xschen.boot.launch.dao.testdb.Article;
+import com.xschen.boot.launch.dao.testdb2.Message;
+import com.xschen.boot.launch.dao.testdb2.MessageRepository;
 import com.xschen.boot.launch.model.ArticleVO;
 import com.xschen.boot.launch.utils.DozerUtils;
 import org.dozer.Mapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -21,11 +24,17 @@ public class ArticleJPAServiceImpl implements ArticleService{
     private ArticleRepository articleRepository;
 
     @Resource
+    private MessageRepository messageRepository;
+
+    @Resource
     private Mapper dozerMapper;
 
+    @Transactional
     public void saveArticle(ArticleVO articleVO) {
         Article articlePO = dozerMapper.map(articleVO, Article.class);
         articleRepository.save(articlePO);
+        messageRepository.save(new Message(null, "zimug", "love studying"));
+//        int a = 10 / 0;
     }
 
     public void deleteArticle(Long id) {
