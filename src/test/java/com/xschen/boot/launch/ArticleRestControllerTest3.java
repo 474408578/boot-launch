@@ -32,49 +32,49 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @WebMvcTest // 轻量级的测试，主要用于controller层的测试，只覆盖应用程序的controller层，速度相对较快
 public class ArticleRestControllerTest3 {
 
-    @Resource
-    private MockMvc mockMvc;
-
-    // mock一个假的service，把接口校验完成
-    @MockBean
-    private ArticleService articleService;
-
-    @Test
-    public void saveArticle() throws Exception {
-        String article = "{\n" +
-                "    \"id\": 1,\n" +
-                "    \"author\": \"zimug\",\n" +
-                "    \"title\": \"手摸手教你开发spring boot\",\n" +
-                "    \"content\": \"c\",\n" +
-                "    \"createTime\": \"2017-07-16 05:23:34\",\n" +
-                "    \"reader\":[{\"name\":\"zimug\",\"age\":18},{\"name\":\"kobe\",\"age\":37}]\n" +
-                "}";
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        Article articleObj = objectMapper.readValue(article, Article.class);
-
-
-        /**
-         * 打桩，告诉应用程序，当调用articleService.saveArticle(articleObj)时，不是真的调用这个方法，
-         * 直接返回一个结果("ok")就行了。
-         */
-        when(articleService.saveArticle(articleObj)).thenReturn("ok");
-
-        ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders
-                .request(HttpMethod.POST, "/rest/articles")
-                .contentType("application/json;charset=utf-8")
-                .content(article)
-        );
-
-        resultActions.andReturn().getResponse().setCharacterEncoding("utf-8");
-        MvcResult mvcResult = resultActions
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data").value("ok"))
-                .andDo(print())
-                .andReturn();
-
-        log.info(mvcResult.getResponse().getContentAsString());
-
-
-    }
+//    @Resource
+//    private MockMvc mockMvc;
+//
+//    // mock一个假的service，把接口校验完成
+//    @MockBean
+//    private ArticleService articleService;
+//
+//    @Test
+//    public void saveArticle() throws Exception {
+//        String article = "{\n" +
+//                "    \"id\": 1,\n" +
+//                "    \"author\": \"zimug\",\n" +
+//                "    \"title\": \"手摸手教你开发spring boot\",\n" +
+//                "    \"content\": \"c\",\n" +
+//                "    \"createTime\": \"2017-07-16 05:23:34\",\n" +
+//                "    \"reader\":[{\"name\":\"zimug\",\"age\":18},{\"name\":\"kobe\",\"age\":37}]\n" +
+//                "}";
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        Article articleObj = objectMapper.readValue(article, Article.class);
+//
+//
+//        /**
+//         * 打桩，告诉应用程序，当调用articleService.saveArticle(articleObj)时，不是真的调用这个方法，
+//         * 直接返回一个结果("ok")就行了。
+//         */
+////        when(articleService.saveArticle(articleObj)).thenReturn("ok");
+//
+//        ResultActions resultActions = mockMvc.perform(
+//                MockMvcRequestBuilders
+//                .request(HttpMethod.POST, "/rest/articles")
+//                .contentType("application/json;charset=utf-8")
+//                .content(article)
+//        );
+//
+//        resultActions.andReturn().getResponse().setCharacterEncoding("utf-8");
+//        MvcResult mvcResult = resultActions
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.data").value("ok"))
+//                .andDo(print())
+//                .andReturn();
+//
+//        log.info(mvcResult.getResponse().getContentAsString());
+//
+//
+//    }
 }

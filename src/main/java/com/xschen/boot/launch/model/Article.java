@@ -1,18 +1,12 @@
 package com.xschen.boot.launch.model;
 
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import lombok.AllArgsConstructor;
+
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Objects;
 
 /**
  * @author xschen
@@ -20,31 +14,97 @@ import java.util.List;
 
 @Data
 @Builder
-@JsonPropertyOrder(value = {"content", "title"}) // 改变子属性在JSON序列化中的默认定义的顺序。如：content在先，title在后。
-@AllArgsConstructor
-@NoArgsConstructor
-public class Article {
-    /**
-     * id : 1
-     * author : zimug
-     * title : 手摸手教你开发spring boot
-     * content : c
-     * createTime :
-     * reader : [{"name":"zimug","age":18},{"name":"kobe","age":37}]
-     */
-
-//    @JsonIgnore // 排除某个属性不做序列化与反序列化
+public class Article implements Serializable {
     private Long id;
 
-//     @JsonProperty("auther") // 为某个属性换一个名称，体现在JSON数据里面
     private String author;
-    private String title;
+
     private String content;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL) // 排除为空的元素不做序列化与反序列化
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime createTime;
-    private List<Reader> reader;
+    private Date createTime;
+
+    private String title;
+
+    private static final long serialVersionUID = 1L;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Article article = (Article) o;
+        return Objects.equals(id, article.id) &&
+                Objects.equals(author, article.author) &&
+                Objects.equals(content, article.content) &&
+                Objects.equals(createTime, article.createTime) &&
+                Objects.equals(title, article.title);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+        result = prime * result + ((getAuthor() == null) ? 0 : getAuthor().hashCode());
+        result = prime * result + ((getContent() == null) ? 0 : getContent().hashCode());
+        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
+        result = prime * result + ((getTitle() == null) ? 0 : getTitle().hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", author=").append(author);
+        sb.append(", content=").append(content);
+        sb.append(", createTime=").append(createTime);
+        sb.append(", title=").append(title);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
+    }
 }

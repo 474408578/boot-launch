@@ -13,7 +13,7 @@ import java.util.Properties;
  * @author xschen
  *
  * spring不支持使用@PropertySource加载YAML配置文件，
- * DefaultPropertySourceFactory配置文件夹在的工厂类，通过集成DefaultPropertySourceFactory，
+ * DefaultPropertySourceFactory配置文件夹在的工厂类，通过继承DefaultPropertySourceFactory，
  * 然后重写下他的createPropertySource，从而实现yaml的额外配置文件加载。
  */
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,7 +44,7 @@ public class ArticleController {
                 .author("xschen")
                 .content("spring boot")
                 .title("t1")
-                .createTime(LocalDateTime.now())
+                .createTime(new Date())
                 .build();
         log.info("article: " + article);
 
@@ -51,12 +52,12 @@ public class ArticleController {
     }
 
     // 增加一篇Article
-//    @RequestMapping(path = "/articles", method = RequestMethod.POST)
+    @RequestMapping(path = "/articles", method = RequestMethod.POST)
     @PostMapping("/articles")
-    public @ResponseBody AjaxResponse saveArticle(@RequestBody Article article) {
+    public @ResponseBody AjaxResponse saveArticle(@RequestBody ArticleVO article) {
+        articleService.saveArticle(article);
         log.info("saveArticle: " + article);
-//        return AjaxResponse.success(article);
-        return AjaxResponse.success(articleService.saveArticle(article));
+        return AjaxResponse.success();
     }
 
     // 更新文章
