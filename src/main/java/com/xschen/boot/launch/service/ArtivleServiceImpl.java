@@ -1,8 +1,7 @@
 package com.xschen.boot.launch.service;
 
-
-import com.xschen.boot.launch.generator.mapper.ArticleMapper;
-import com.xschen.boot.launch.generator.model.Article;
+import com.xschen.boot.launch.mapper.ArticleMapper;
+import com.xschen.boot.launch.model.Article;
 import com.xschen.boot.launch.model.ArticleVO;
 import com.xschen.boot.launch.utils.DozerUtils;
 import org.dozer.Mapper;
@@ -32,27 +31,24 @@ public class ArtivleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void deleteArtice(Long id) {
-        articleMapper.deleteByPrimaryKey(id);
-
+    public void deleteArticle(Long id) {
+        articleMapper.deleteById(id);
     }
 
     @Override
     public void updateArticle(ArticleVO article) {
         Article articlePO = dozerMapper.map(article, Article.class);
-        articleMapper.updateByPrimaryKeySelective(articlePO);
+        articleMapper.updateById(articlePO);
     }
 
     @Override
     public ArticleVO getArticle(Long id) {
-//        return null;
-        return dozerMapper.map(articleMapper.selectByPrimaryKey(id), ArticleVO.class);
+        return dozerMapper.map(articleMapper.selectById(id), ArticleVO.class);
     }
 
     @Override
     public List<ArticleVO> getAll() {
-//        return null;
-        List<Article> articles = articleMapper.selectByExample(null);
+        List<Article> articles = articleMapper.selectList(null);
         return DozerUtils.mapList(articles, ArticleVO.class);
     }
 }

@@ -1,4 +1,5 @@
-package com.xschen.boot.launch.model;
+package com.xschen.boot.launch;
+
 
 import lombok.Data;
 
@@ -11,42 +12,41 @@ import lombok.Data;
 
 @Data
 public class AjaxResponse {
+    // 请求是否处理成功
     private boolean isok;
+    // 请求响应状态码
     private int code;
+    // 请求描述信息
     private String message;
+    // 请求结果数据
     private Object data;
-
-    private AjaxResponse() {}
 
     // 请求成功的响应，不带查询数据（用于删除、修改，新增接口）
     public static AjaxResponse success() {
-        AjaxResponse resultBean = new AjaxResponse();
-        resultBean.setIsok(true);
-        resultBean.setCode(200);
-        resultBean.setMessage("success");
-
-        return resultBean;
+        AjaxResponse ajaxResponse = new AjaxResponse();
+        ajaxResponse.setIsok(true);
+        ajaxResponse.setCode(200);
+        ajaxResponse.setMessage("success");
+        return ajaxResponse;
     }
 
     // 请求成功的响应，带有查询数据（用于数据查询接口）
     public static AjaxResponse success(Object data) {
-        AjaxResponse resultBean = new AjaxResponse();
-        resultBean.setIsok(true);
-        resultBean.setCode(200);
-        resultBean.setMessage("success");
-        resultBean.setData(data);
-
-        return resultBean;
+        AjaxResponse ajaxResponse = new AjaxResponse();
+        ajaxResponse.setIsok(true);
+        ajaxResponse.setCode(200);
+        ajaxResponse.setMessage("success");
+        ajaxResponse.setData(data);
+        return ajaxResponse;
     }
 
     // 请求成功的响应，带有查询数据（用于数据查询接口）
     public static AjaxResponse success(Object data, String message) {
-        AjaxResponse resultBean = new AjaxResponse();
-        resultBean.setIsok(true);
-        resultBean.setCode(200);
-        resultBean.setMessage(message);
-        resultBean.setData(data);
-
-        return resultBean;
+        AjaxResponse ajaxResponse = new AjaxResponse();
+        ajaxResponse.setIsok(true);
+        ajaxResponse.setCode(200);
+        ajaxResponse.setMessage(message);
+        ajaxResponse.setData(data);
+        return ajaxResponse;
     }
 }

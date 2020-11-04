@@ -21,7 +21,7 @@ import javax.validation.constraints.NotEmpty;
 @Component
 @ConfigurationProperties(prefix = "family") // 表示配置的整体前缀, 将配置绑定到变量上
 @Validated // 对绑定的属性值进行校验
-@PropertySource(value = {"classpath:family.yml"}, factory = MixPropertySourceFactory.class)
+@PropertySource(value = {"classpath:otherconfig/family.yml"}, factory = MixPropertySourceFactory.class)
 public class Family {
     // 成员变量名称要和yml配置项key一一对应
 //    @Value("${family.familyName}")

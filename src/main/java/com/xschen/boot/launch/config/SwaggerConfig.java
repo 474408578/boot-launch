@@ -23,7 +23,7 @@ public class SwaggerConfig {
     // 配置接口文档的title(标题)、描述、termsOfServiceUrl（服务协议）、版本等相关信息
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Springboot利用swagger构建api文档")
+                .title("boot lanunch 项目 API文档")
                 .description("简单优雅的restful风格")
                 .termsOfServiceUrl("http://www.zimug.com")
                 .version("1.0")

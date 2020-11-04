@@ -15,7 +15,7 @@ import java.util.Map;
 @Data
 @Configuration
 @PropertySource(name = "employeeProperties",
-                value = "classpath:employee.properties",
+                value = "classpath:/otherconfig/employee.properties",
                 encoding = "utf-8"
             )
 public class Employee {
